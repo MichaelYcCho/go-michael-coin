@@ -2,18 +2,28 @@ package main
 
 import (
 	"fmt"
+	"html/template"
+	"log"
+	"net/http"
 
 	"github.com/michael_cho77/go-michael-coin/blockchain"
 )
 
+const port string = ":8000"
+
+type homeData struct {
+	PageTitle string
+	Blocks    []*blockchain.Block
+}
+
+func home(rw http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/home.gohtml"))
+	data := homeData{"Home", blockchain.GetBlockchain().AllBlocks()}
+	tmpl.Execute(rw, data)
+}
+
 func main() {
-	chain := blockchain.GetBlockchain()
-	chain.AddBlock("Second Block")
-	chain.AddBlock("Third Block")
-	chain.AddBlock("Fourth Block")
-	for _, block := range chain.AllBlocks() {
-		fmt.Printf("Data: %s\n", block.Data)
-		fmt.Printf("Hash: %s\n", block.Hash)
-		fmt.Printf("Prev Hash: %s\n", block.PrevHash)
-	}
+	http.HandleFunc("/", home)
+	fmt.Printf("Listening on http://127.0.0.1%s\n", port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
