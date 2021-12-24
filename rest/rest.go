@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/michael_cho77/go-michael-coin/blockchain"
 	"github.com/michael_cho77/go-michael-coin/utils"
 )
@@ -71,11 +72,18 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func block(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	fmt.Print(id)
+}
+
 func Start(aPort int) {
-	handler := http.NewServeMux()
+	router := mux.NewRouter()
 	port = fmt.Sprintf(":%d", aPort)
-	handler.HandleFunc("/", documentation)
-	handler.HandleFunc("/blocks", blocks)
-	fmt.Printf("Listening on http://127.0.0.1:%s\n", port)
-	log.Fatal(http.ListenAndServe(port, handler))
+	router.HandleFunc("/", documentation).Methods("GET")
+	router.HandleFunc("/blocks", blocks).Methods("GET", "POST")
+	router.HandleFunc("/blocks/{id:[0-9]+}", block).Methods("GET")
+	fmt.Printf("Listening on http://localhost%s\n", port)
+	log.Fatal(http.ListenAndServe(port, router))
 }
