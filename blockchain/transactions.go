@@ -60,7 +60,33 @@ func makeTx(from, to string, amount int) (*Tx, error) {
 	if Blockchain().BalanceByAddress(from) < amount {
 		return nil, errors.New("not enough money")
 	}
-	return _, _
+	var txIns []*TxIn
+	var txOuts []*TxOut
+	total := 0
+	oldTxOuts := Blockchain().TxOutsByAddress(from)
+	for _, txOut := range oldTxOuts {
+		if total > amount {
+			break
+		}
+		txIn := &TxIn{txOut.Owner, txOut.Amount}
+		txIns = append(txIns, txIn)
+		total += txOut.Amount
+	}
+	change := total - amount
+	if change != 0 {
+		changeTxOut := &TxOut{from, change}
+		txOuts = append(txOuts, changeTxOut)
+	}
+	txOut := &TxOut{to, amount}
+	txOuts = append(txOuts, txOut)
+	tx := &Tx{
+		Id:        "",
+		Timestamp: int(time.Now().Unix()),
+		TxIns:     txIns,
+		TxOuts:    txOuts,
+	}
+	tx.getId()
+	return tx, nil
 }
 
 // Mempool을 위해서 사용될 리시버
