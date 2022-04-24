@@ -13,4 +13,15 @@ http://localhost:4000/balance/michael?total=true
 
 
 ###
+http://localhost:4000/balance/michael
+
+###
+POST http://localhost:4000/transactions
+
+{
+    "to":"nobod",
+    "amount":30
+}
+
+###
 http://localhost:4000/blocks/6596a735b84b72bc1c89bf73f9beabd1745cbe191122764f3475154ba0a854c1

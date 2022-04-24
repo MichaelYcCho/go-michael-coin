@@ -91,7 +91,7 @@ func makeTx(from, to string, amount int) (*Tx, error) {
 
 // Mempool을 위해서 사용될 리시버
 func (m *mempool) AddTx(to string, amount int) error {
-	tx, err := makeTx("nico", to, amount)
+	tx, err := makeTx("michael", to, amount)
 	if err != nil {
 		return err
 	}
