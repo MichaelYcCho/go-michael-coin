@@ -57,14 +57,23 @@ func (b *Block) mine() {
 
 func createBlock(prevHash string, height int) *Block {
 	block := &Block{
-		Hash:         "",
-		PrevHash:     prevHash,
-		Height:       height,
-		Difficulty:   Blockchain().difficulty(),
-		Nonce:        0,
-		Transactions: []*Tx{makeCoinbaseTx("michael")},
+		Hash:       "",
+		PrevHash:   prevHash,
+		Height:     height,
+		Difficulty: Blockchain().difficulty(),
+		Nonce:      0,
 	}
 	block.mine()
+	block.Transactions = Mempool.TxToConfirm()
 	block.persist()
 	return block
+}
+
+// 승인할 트랜젝션을 mempool에서 가져옴
+func (m *mempool) TxToConfirm() []*Tx {
+	coninbase := makeCoinbaseTx("michael")
+	txs := m.Txs
+	txs = append(txs, coninbase)
+	m.Txs = nil
+	return txs
 }
