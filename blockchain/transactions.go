@@ -78,13 +78,13 @@ func makeCoinbaseTx(address string) *Tx {
 
 // 실제로 트랜젝션을 생성해줄 리비서
 func makeTx(from, to string, amount int) (*Tx, error) {
-	if Blockchain().BalanceByAddress(from) < amount {
-		return nil, errors.New("not enoguh Money")
+	if BalanceByAddress(from, Blockchain()) < amount {
+		return nil, errors.New("not enoguh 돈")
 	}
 	var txOuts []*TxOut
 	var txIns []*TxIn
 	total := 0
-	uTxOuts := Blockchain().UTxOutsByAddress(from)
+	uTxOuts := UTxOutsByAddress(from, Blockchain())
 	for _, uTxOut := range uTxOuts {
 		if total >= amount {
 			break
@@ -111,10 +111,18 @@ func makeTx(from, to string, amount int) (*Tx, error) {
 
 // Mempool을 위해서 사용될 리시버
 func (m *mempool) AddTx(to string, amount int) error {
-	tx, err := makeTx("michael", to, amount)
+	tx, err := makeTx("nico", to, amount)
 	if err != nil {
 		return err
 	}
 	m.Txs = append(m.Txs, tx)
 	return nil
+}
+
+func (m *mempool) TxToConfirm() []*Tx {
+	coinbase := makeCoinbaseTx("nico")
+	txs := m.Txs
+	txs = append(txs, coinbase)
+	m.Txs = nil
+	return txs
 }
