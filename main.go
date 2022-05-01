@@ -1,7 +1,11 @@
 package main
 
-import "github.com/michael_cho77/go-michael-coin/wallet"
+import (
+	"github.com/michael_cho77/go-michael-coin/cli"
+	"github.com/michael_cho77/go-michael-coin/db"
+)
 
 func main() {
-	wallet.Wallet()
+	defer db.Close()
+	cli.Start()
 }
