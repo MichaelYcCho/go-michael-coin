@@ -9,11 +9,17 @@ POST http://localhost:4000/blocks
 }
 ###
 
+
+http://localhost:4000/wallet
+###
+
 http://localhost:4000/balance/michael?total=true
 
+###
+http://localhost:4000/balance/nobod
 
 ###
-http://localhost:4000/balance/michael
+http://localhost:4000/balance/3ba93389769dfe505bcd9950c302155341b48555bae5ca63119d197c90ecddf9860b63f5cf009315223736089522e61f7dec6f23d9b3deab657f6788f9146191
 
 ###
 POST http://localhost:4000/transactions
