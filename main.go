@@ -1,11 +1,22 @@
 package main
 
 import (
-	"github.com/michael_cho77/go-michael-coin/cli"
-	"github.com/michael_cho77/go-michael-coin/db"
+	"fmt"
+	"time"
 )
 
+func countToTen(name string) {
+	for i := range [10]int{} {
+		fmt.Println(i, name)
+		time.Sleep(1 * time.Second)
+	}
+}
+
 func main() {
-	defer db.Close()
-	cli.Start()
+	go countToTen("first")
+	go countToTen("second")
+	for {
+
+	}
+
 }
