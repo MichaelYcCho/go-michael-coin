@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	fileName string = "nomadcoin.wallet"
+	fileName string = "michaelcoin.wallet"
 )
 
 type wallet struct {
