@@ -124,7 +124,7 @@ func jsonContentTypeMiddleware(next http.Handler) http.Handler {
 
 func loggerMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		fmt.Println(r.URL)
+		fmt.Println(r.RequestURI)
 		next.ServeHTTP(rw, r)
 	})
 }
@@ -179,7 +179,7 @@ func Start(aPort int) {
 	router.HandleFunc("/mempool", mempool).Methods("GET")
 	router.HandleFunc("/wallet", myWallet).Methods("GET")
 	router.HandleFunc("/transactions", transactions).Methods("POST")
-	router.HandleFunc("/ws", p2p.Upgrage).Methods("GET")
+	router.HandleFunc("/ws", p2p.Upgrade).Methods("GET")
 	fmt.Printf("Listening on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, router))
 }
