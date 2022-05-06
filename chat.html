@@ -10,6 +10,7 @@
     <script>
       const socket = new WebSocket("ws://localhost:4000/ws");
       socket.addEventListener("close", () => console.log("closed"));
+      setTimeout(() => socket.send("Hello"), 5000);
     </script>
   </body>
 </html>
