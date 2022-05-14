@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
+	"github.com/michael_cho77/go-michael-coin/blockchain"
 	"github.com/michael_cho77/go-michael-coin/utils"
 )
 
@@ -34,4 +35,10 @@ func AddPeer(address, port, openPort string) {
 	p := initPeer(conn, address, port)
 	sendNewestBlock(p)
 
+}
+
+func BroadcastNewBlock(b *blockchain.Block) {
+	for _, p := range Peers.v {
+		notifyNewBlock(b, p)
+	}
 }
