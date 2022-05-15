@@ -57,12 +57,12 @@ func createPrivKey() *ecdsa.PrivateKey {
 func persistKey(key *ecdsa.PrivateKey) {
 	bytes, err := x509.MarshalECPrivateKey(key)
 	utils.HandleErr(err)
-	err = os.WriteFile(fileName, bytes, 0644)
+	err = files.writeFile(fileName, bytes, 0644)
 	utils.HandleErr(err)
 }
 
 func restoreKey() (key *ecdsa.PrivateKey) {
-	keyAsBytes, err := os.ReadFile(fileName)
+	keyAsBytes, err := files.readFile(fileName)
 	utils.HandleErr(err)
 	key, err = x509.ParseECPrivateKey(keyAsBytes)
 	utils.HandleErr(err)
