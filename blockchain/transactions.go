@@ -23,7 +23,9 @@ var memOnce sync.Once
 
 func Mempool() *mempool {
 	memOnce.Do(func() {
-		m = &mempool{}
+		m = &mempool{
+			Txs: make(map[string]*Tx),
+		}
 	})
 	return m
 }
@@ -79,8 +81,7 @@ func validate(tx *Tx) bool {
 	return valid
 }
 
-func isOnMempool(uTxOut *UTxOut) bool {
-	exists := false
+func isOnMempool(uTxOut *UTxOut) (exists bool) {
 Outer:
 	for _, tx := range Mempool().Txs {
 		for _, input := range tx.TxIns {
@@ -90,7 +91,7 @@ Outer:
 			}
 		}
 	}
-	return exists
+	return
 }
 
 func makeCoinbaseTx(address string) *Tx {
@@ -158,7 +159,7 @@ func (m *mempool) AddTx(to string, amount int) (*Tx, error) {
 		return nil, err
 	}
 	m.Txs[tx.ID] = tx
-	return nil, err
+	return tx, nil
 }
 
 func (m *mempool) TxToConfirm() []*Tx {
