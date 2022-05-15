@@ -14,7 +14,7 @@ var upgrader = websocket.Upgrader{}
 func Upgrade(rw http.ResponseWriter, r *http.Request) {
 	// Port :3000 will upgrade the request from :4000
 	openPort := r.URL.Query().Get("openPort")
-	ip := utils.Spliter(r.RemoteAddr, ":", 0)
+	ip := utils.Splitter(r.RemoteAddr, ":", 0)
 	upgrader.CheckOrigin = func(r *http.Request) bool {
 		return openPort != "" && ip != ""
 	}
