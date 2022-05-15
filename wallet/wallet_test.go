@@ -29,6 +29,7 @@ func TestSign(t *testing.T) {
 	}
 }
 
+// Input1 : 성공, Input2 : 실패
 func TestVerify(t *testing.T) {
 	type test struct {
 		input string
